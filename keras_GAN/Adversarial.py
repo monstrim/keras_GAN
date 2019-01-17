@@ -1,4 +1,10 @@
-class Adversarial(models.Model):
+import keras
+
+from keras import optimizers
+from keras import backend as K
+from keras.models import Model
+
+class Adversarial(Model):
     '''
     This is a base class. It ~can~ be instantiated and setup by hand,
     but ideally you'll use a class extended from it which handles
@@ -36,7 +42,16 @@ class Adversarial(models.Model):
     def compile(self,
                 optimizer,
                 **kwargs):
+        '''
+        This method is mostly a copypaste of super.compile(),
+        adapted to some (very few) specific use cases of this
+        class, such as not needing an external loss provided.
         
+        TODO: somehow integrate this into a super.compile()
+        call, with, for example, a dummy loss, and any other
+        adaptations needed managed in code external to that
+        method.
+        '''
         if isinstance(optimizer, list):
             raise ValueError(
                 'optimizer must be either a single value, '
